@@ -17,14 +17,18 @@
             position: relative;
             width: 600px;
             height: 480px;
-            animation-name: heart;
+            /* animation-name: heart;
             animation-duration: 0.8s;
             animation-timing-function: ease-in;
             animation-delay: 0;
             animation-iteration-count: infinite;
             animation-direction: alternate;
-            /* animation-play-state: paused;
             animation-fill-mode: backwards; */
+            animation: heart 0.8s ease infinite alternate backwards
+        }
+        
+        div:hover {
+            animation-play-state: paused
         }
         
         div::before,
