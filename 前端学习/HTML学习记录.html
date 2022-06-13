@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学习记录</title>
+</head>
+
+<body id="dingbu">
+    <h1>这是个一级标题</h1>
+    <h1>一</h1>
+    <h2>共</h2>
+    <h3>六</h3>
+    <h4>个</h4>
+    <h5>级</h5>
+    <h6>别</h6>
+    <p>段落标签就不用说了吧！</p>
+    换行→<br/>
+    <strong>加粗</strong>的文字；<br/> 同是
+    <b>加粗</b>的文字；<br/>
+    <h1>这是个<b>加粗</b>的标题，可以叠加加粗标签吗？</h1><br/>看来<b>加粗</b>和
+    <h1>标题</h1>标签不能一起用。<br/>
+    <em>试一下斜体效果，也就是倾斜标签</em><br/>
+    <i>i标签也可以</i><br/>
+    <del>删除线</del><br/>
+    <s>同是删除线</s><br/>
+    <ins>下划线</ins><br/>
+    <u>也是下划线</u> <br/> 记住
+    <strong>粗体</strong>和<del>删除线</del>就方便得多了，<ins>下划线</ins>和<em>斜体</em>嘛用多了同样也会记住，
+    <b>ct</b><i>xt</i><u>xh</u><s>ui</s>
+    <p>
+        <br/>要是母语是英文的话就容易的多了，很容易联想——同时很多软件的快捷键有很大的相似，所以记忆起来也没那么困难。
+        <br/>而且，什么来着？哦，对了，这个样子打字的时候还得经常的中英文切换，十分不便，想省事只能用拼音了，可谁他妈的看拼音呀</p>
+    <p>突然有了个想法，边学边练边记录感想，一举夺得的想法。不错，就是用这一个文档展示出来自己学的东西，学以致用，既学到又练习了，还展示了出来，如果可以的话，可以给别人当成学习的文档，一个文件学会前端——当然，还非常远了！不过试一下吧</p>
+    <p>既然如此的话，那么还有必要在OneNote里面记笔记吗？还是没想好怎么处理笔记和练习以及展示的关系，还是先分成两块吧。</p>
+    <div>大盒子</div>
+    <div>大盒子</div>
+    <span>小盒子</span>
+    <span>小盒子</span>
+
+    <h1>超链接、图片标签一勺烩</h1>
+    <a href="https://pbs.twimg.com/media/FTYMzS-VUAAsBXh?format=jpg&name=orig" target="_blank">
+        <b>给图片+文字一起添加超链接</b><img src="https://pbs.twimg.com/media/FTYMzS-VUAAsBXh?format=jpg&name=orig" alt="裸女" title="你看到了什么？" width="395.75" height="512" border="5" />
+    </a>
+
+
+    <!-- 很快啊，用Ctrl+/ -->
+
+    <h1>&lt;特殊字符测试&gt;</h1>
+
+    <h1>画个表格</h1>
+    <table align="center" border="8" cellpadding="50" cellspacing="10" width="600" height="400">
+        <thead>
+            <tr>
+                <th>1</th>
+                <th>2</th>
+                <th colspan="3">3</th>
+                <!-- <th>4</th>-->
+                <!-- <th>5</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th rowspan="3">a</th>
+                <td>b</td>
+                <td>c</td>
+                <td>d</td>
+                <td>e</td>
+            </tr>
+            <tr>
+                <!-- <th>+</th> -->
+                <td>-</td>
+                <td>*</td>
+                <td>/</td>
+                <td>=</td>
+            </tr>
+            <tr>
+                <!-- <th>o</th> -->
+                <td>p</td>
+                <td>u</td>
+                <td>i</td>
+                <td>v</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h1>列表</h1>
+
+    无序列表
+    <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+
+    有序列表
+    <ol>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ol>
+
+    自定义列表
+    <dl><dt>1</dt>
+        <dd>2</dd>
+        <dd>3</dd>
+        <dd>4</dd>
+    </dl>
+
+    <h1>表单标签</h1>
+    表单域\表单控件（元素）,输入，下拉，文本域
+    <form action="demo.php" method="POST" name="1">
+        <label for="text">账号:</label><input type="text" value="手机号/邮箱/用户名" id="text">
+        <br>密码:<input type="password" maxlength="10">
+        <br><label for="nan">男</label><input type="radio" name="sex" id="nan"><label for="nv">女</label><input type="radio" name="sex" id=nv>
+        <br>电影<input type="checkbox" checked="checked">音乐<input type="checkbox">游戏<input type="checkbox">
+        <br><input type="submit" value="登录"><input type="reset" value="重置"><input type="button" value="验证码">
+        <br><input type="file">
+
+        <br>老婆数量<select name="" id="">
+            <option>1</option>
+            <option>2</option>
+            <option selected="selected">3</option>
+            <option>4</option>
+        </select>
+
+        <br>介绍 <textarea cols="80" rows="5">写点什么</textarea>
+    </form>
+    提示信息<br>
+    <a href="#dingbu">返回顶部</a>
+</body>
+
+</html>

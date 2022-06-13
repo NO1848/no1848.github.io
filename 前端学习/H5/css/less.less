@@ -1,0 +1,29 @@
+// 变量
+@colorp: rgb(255, 255, 255);
+div{
+    color: @colorp;
+}
+// 编译 easy less插件
+// 嵌套
+div{
+    width: auto;
+    a{
+        font-size: larger;
+        // & 连接符
+        &:hover{
+            color: #000;
+        }
+        span{
+            width: auto;
+        }
+    
+    }
+
+}
+// 运算 + - * /
+@width: 400px + 100;
+@bor: (83rem / 23);
+div {
+    width: (@width - 5)*2;
+    height: @bor;
+}

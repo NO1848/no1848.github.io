@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轮播图</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .img {
+            position: relative;
+            width: 700px;
+            margin: 0 auto;
+        }
+        
+        .divl,
+        .divr {
+            width: 20px;
+            height: 25px;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: absolute;
+            top: 170px;
+            text-align: center;
+            line-height: 22px;
+        }
+        
+        .divl {
+            border-radius: 0 25px 25px 0;
+            left: 50%;
+            margin-left: -350px;
+        }
+        
+        .divr {
+            border-radius: 25px 0 0 25px;
+            right: 50%;
+            margin-right: -350px;
+        }
+        
+        a {
+            color: #fff;
+            text-decoration: none;
+            ;
+        }
+        
+        ul {
+            width: 100px;
+            height: 30px;
+            position: absolute;
+            left: 50%;
+            bottom: 5px;
+            margin-left: -5px;
+        }
+        
+        div ul li {
+            width: 10px;
+            height: 10px;
+            color: aqua;
+            float: left;
+        }
+        
+        li:hover {
+            color: yellow;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="img"><img src="image/1.jpg" alt="" width="700">
+        <ul>
+            <li>
+                <a href="#"></a>
+            </li>
+            <li>
+                <a href="#"></a>
+            </li>
+            <li>
+                <a href="#"></a>
+            </li>
+            <li>
+                <a href="#"></a>
+            </li>
+            <li>
+                <a href="#"></a>
+            </li>
+            <li>
+                <a href="#"></a>
+            </li>
+        </ul>
+    </div>
+    <div class="divl">
+
+        <a href="#l">
+            <</a>
+    </div>
+    <div class="divr">
+        <a href="#r">></a>
+    </div>
+    <div>
+
+    </div>
+</body>
+
+</html>

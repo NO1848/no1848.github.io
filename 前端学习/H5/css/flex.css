@@ -1,0 +1,128 @@
+body {
+    max-width: 540px;
+    min-width: 320px;
+    margin: 0 auto;
+    /* font: normal 14px/1.5 Tahoma, ""; */
+    color: #000;
+    background: #68beb6;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+}
+
+div {
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: #222;
+}
+
+.search {
+    display: flex;
+    /* 固定定位以屏幕为主， */
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 540px;
+    min-width: 320px;
+    height: 44px;
+    background: rgb(208, 169, 169);
+}
+
+.kl {
+    position: relative;
+    height: 26px;
+    margin: 7px 10px;
+    border-radius: 5px;
+    flex: 1;
+    border: 1px solid rgb(0, 0, 0);
+    padding-left: 25px;
+    line-height: 24px;
+    /* background-color: #fff; */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+}
+
+.kl::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 15px;
+    width: 15px;
+    display: block;
+    background: url(../image/dang1.ico);
+    /* background-size: ; */
+    margin: 5px;
+}
+
+.user {
+    height: 44px;
+    width: 44px;
+    background-color: rgb(203, 203, 93);
+    text-decoration: none;
+    font-size: 10px;
+    color: chartreuse;
+    line-height: 4px;
+    text-align: center;
+}
+
+.user::before {
+    content: "";
+    display: block;
+    width: 23px;
+    height: 23px;
+    background: url(../image/dang2.ico);
+    /* block-size: ; */
+    margin: 5px auto;
+}
+
+.focus {
+    padding-top: 44px;
+    height: 120px;
+    overflow: hidden;
+}
+
+.focus img {
+    width: 100%;
+}
+
+.nav1 {
+    display: flex;
+    height: 64px;
+    border-radius: 8px;
+    background-color: #fff;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.nav1 li {
+    flex: 1;
+    background-color: #f9f000;
+}
+
+.nav1 li a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.icon1 {
+    width: 32px;
+    height: 32px;
+    background: url(../image/favicon\ \(4\).ico);
+    margin-top: 8px;
+}
+
+.nav1 li a span {
+    list-style: none;
+}
+
+
+/* .nav1 li [class^="jsldkfjwoei"] {
+    height: 3px;
+} */

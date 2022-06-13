@@ -1,0 +1,55 @@
+p {
+    color: rgb(21, 12, 184);
+    font-family: 宋体, 黑体;
+    font-size: 28px;
+    font-weight: 800;
+    font-style: italic;
+    font: italic 800 28px 宋体
+}
+
+.div-red {
+    width: 200px;
+    height: 200px;
+    background-color: #ff0000
+}
+
+.div-green {
+    width: 200px;
+    height: 200px;
+    background-color: rgb(0, 255, 0)
+}
+
+#pink {
+    color: pink;
+}
+
+** {
+    color: bisque;
+}
+
+h2 {
+    font-weight: 200;
+    font-family: 黑体;
+    text-align: right;
+}
+
+#line {
+    text-decoration: line-through;
+}
+
+#over {
+    text-decoration: overline;
+}
+
+#under {
+    text-decoration: underline;
+}
+
+p {
+    text-indent: -2em;
+    line-height: 2em;
+}
+
+li {
+    line-height: 2em;
+}

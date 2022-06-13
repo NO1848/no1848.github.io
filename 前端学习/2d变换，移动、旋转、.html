@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>跳动的心</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        div {
+            margin: 0 auto;
+            position: relative;
+            width: 600px;
+            height: 480px;
+            animation-name: heart;
+            animation-duration: 0.8s;
+            animation-timing-function: ease-in;
+            animation-delay: 0;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+            /* animation-play-state: paused;
+            animation-fill-mode: backwards; */
+        }
+        
+        div::before,
+        div::after {
+            content: "";
+            position: absolute;
+            border-radius: 150px 150px 0 0;
+            background-color: #ff0000;
+            width: 300px;
+            height: 480px;
+        }
+        
+        div::before {
+            transform: rotate(315deg)
+        }
+        
+        div::after {
+            transform: rotate(45deg);
+            right: 172px;
+        }
+        
+        @keyframes heart {
+            0% {
+                transform: scale(80%);
+            }
+            100% {
+                transform: scale(110%);
+            }
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <div></div>
+
+
+</body>
+
+</html>

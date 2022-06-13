@@ -1,0 +1,44 @@
+@import "suning";
+// @wspx: 50px;
+body {
+    position: relative;
+    min-width: 320px;
+    width: 15rem;
+    margin: 0 auto;
+    line-height: 1.5;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: #ae89ff;
+}
+.ssk {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+    width: 15rem;
+    height: (88rem / 50);
+    background-color: #fff;
+    .an {
+        width: (44rem / 50);
+        height: (70rem / 50);
+        background-color: yellow;
+        flex-direction: column;
+        font-size: (10rem / 50);
+    }
+    .sou {
+        flex: 1;
+        background-color: #ff0000;
+        input {
+            height: (66rem / 50);
+            border-radius: (33rem / 50);
+            border: 0;
+            width: 100%;
+            font-size: (25rem / 50);
+        }
+    }
+    .us {
+        width: (75rem / 50);
+        height: (70rem / 50);
+        background-color: #00ffff;
+    }
+}

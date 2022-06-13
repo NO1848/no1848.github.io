@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>两面翻转</title>
+    <style>
+        /* 哪里错了？那个特性改了吗？ */
+        
+        .a {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            margin: 100px auto;
+            transition: all .4s;
+            transform-style: preserve-3d;
+        }
+        
+        .a:hover {
+            transform: rotateY(180deg);
+        }
+        
+        .b,
+        .c {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 500px;
+            font-size: 50px;
+        }
+        
+        .b {
+            background-color: red;
+            z-index: 1;
+        }
+        
+        .c {
+            background-color: blue;
+            transform: rotateY(-180deg);
+        }
+        /*         
+        body {
+            perspective: 350px;
+        } */
+    </style>
+</head>
+
+<body>
+    <div class="a">
+        <div class="b">黑马程序员</div>
+        <div class="c">我在这里等你</div>
+    </div>
+</body>
+
+</html>

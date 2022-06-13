@@ -1,0 +1,215 @@
+body {
+    width: 100%;
+    min-width: 320px;
+    max-width: 640px;
+    margin: 0 auto;
+    font-size: 14px;
+    /* 字体 */
+    /* -webkit-margin-top-collapse: collapse; */
+    font-family: -apple-system, Helvetica, sans-serif;
+    line-height: 1.5;
+    color: #666;
+}
+
+a {
+    color: #666;
+    text-decoration: none;
+}
+
+img {
+    vertical-align: middle;
+}
+
+
+/* 顶部下载app广告 */
+
+.dlapp {
+    height: 45px;
+}
+
+.dlapp ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.dlapp ul li {
+    float: left;
+    height: 45px;
+    background-color: #333333;
+    text-align: center;
+    line-height: 45px;
+}
+
+.dlapp ul li:nth-child(1) {
+    width: 8%;
+}
+
+.dlapp ul li:nth-child(1) img {
+    width: 10px;
+}
+
+.dlapp ul li:nth-child(2) {
+    width: 10%;
+}
+
+.dlapp ul li:nth-child(2) img {
+    width: 30px;
+    /* 图片默认和文字基线对齐 */
+    vertical-align: middle;
+}
+
+.dlapp ul li:nth-child(3) {
+    width: 57%;
+}
+
+.dlapp ul li:nth-child(4) {
+    width: 25%;
+    background-color: #ff0000;
+}
+
+
+/* 搜索 */
+
+.search-wrap {
+    height: 44px;
+    text-align: center;
+    line-height: 44px;
+    overflow: hidden;
+    position: fixed;
+    min-width: 320px;
+    max-width: 640px;
+    width: 100%;
+    /* background-color: #ff0000; */
+}
+
+.btn {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    width: 40px;
+    height: 44px;
+}
+
+.btn::before {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 18px;
+    background-image: url(../image/dang2.ico);
+    background-size: 20px 18px;
+    margin: 14px 0 0 15px;
+}
+
+.login {
+    position: absolute;
+    top: 0px;
+    right: 0;
+    width: 40px;
+    height: 44px;
+    line-height: 44px;
+    color: #fff;
+}
+
+.search {
+    position: relative;
+    height: 30px;
+    background-color: blue;
+    margin: 6px 50px 0;
+    border-radius: 15px;
+}
+
+.jd-sea {
+    width: 20px;
+    height: 15px;
+    position: absolute;
+    top: 8px;
+    left: 13px;
+    background: url(../image/fengche.jpg) no-repeat;
+    background-size: 20px 15px;
+}
+
+.jd-sea::after {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 15px;
+    background-color: #ccc;
+    position: absolute;
+    right: -8px;
+}
+
+.sou {
+    position: absolute;
+    top: 8px;
+    left: 50px;
+    width: 18px;
+    height: 15px;
+    background-color: aquamarine;
+    background: url(../image/favicon\ \(2\).ico) no-repeat;
+    background-size: 18px 15px;
+}
+
+.slider img {
+    width: 100%;
+}
+
+.brand {
+    overflow: hidden;
+    border-radius: 10px 10px 0 0;
+}
+
+.brand div {
+    float: left;
+    width: 33.3333%;
+}
+
+.brand div img {
+    width: 100%;
+}
+
+.nav {
+    margin-top: 5px;
+}
+
+.nav a {
+    float: left;
+    width: 20%;
+    text-align: center;
+}
+
+.nav a img {
+    width: 40px;
+    margin: 10px 0;
+}
+
+.nav a p {
+    margin-top: -6px;
+}
+
+
+/* news */
+
+.news img {
+    width: 100%;
+}
+
+.news a {
+    float: left;
+    box-sizing: border-box;
+}
+
+.news a:nth-child(1) {
+    width: 50%;
+}
+
+
+/* .news a:nth-child(2),
+.news a:nth-child(3) {
+    width: 25%;
+} */
+
+.news a:nth-child(n+2) {
+    width: 25%;
+    border-left: 1px solid #ccc;
+}

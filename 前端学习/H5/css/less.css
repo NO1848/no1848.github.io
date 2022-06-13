@@ -1,0 +1,19 @@
+div {
+  color: #ffffff;
+}
+div {
+  width: auto;
+}
+div a {
+  font-size: larger;
+}
+div a:hover {
+  color: #000;
+}
+div a span {
+  width: auto;
+}
+div {
+  width: 990px;
+  height: 3.60869565rem;
+}
