@@ -1,0 +1,10 @@
+@media screen and (min-width: 750px) {
+    html {
+        font-size: 75px !important;
+    }
+}
+
+div {
+    background-color: aquamarine;
+    height: 5rem;
+}
