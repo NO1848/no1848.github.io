@@ -45,7 +45,7 @@ body {
   padding-bottom: 1.1026rem;
 }
 .content {
-  padding: 1.1282rem 0.5641rem;
+  padding: 1.1282rem 0.8641rem;
   background-color: #ffffff;
   margin-top: 0.2564rem;
 }
@@ -54,10 +54,12 @@ body {
   justify-content: space-between;
   height: 1rem;
   line-height: 1rem;
+  padding-bottom: 0.5rem;
 }
 .content .con-hd h4 {
   font-size: 0.7rem;
   color: #333333;
+  margin: 0;
 }
 .content .con-hd h4 .icon {
   display: inline-block;
@@ -68,4 +70,33 @@ body {
 .content .con-hd .more {
   font-size: 0.5rem;
   color: #999999;
+}
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
