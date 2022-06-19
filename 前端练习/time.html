@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="time">None</h1>
+</body>
+<script type="text/javascript">
+    function change() {
+        var myDate = new Date();
+        // 获取JS时间对象
+        var mytime = myDate.toLocaleString();
+        // 将当前时间转换为String值
+        document.getElementById('time').innerHTML = mytime;
+        // 将当前时间（String）写入到HTML中,这个“time”和<h1>中的id一致
+    }
+    change();
+    setInterval("change()", 1000);
+    // 定时更新HTML文档，每秒更新一次
+</script>
+
+
+</html>
