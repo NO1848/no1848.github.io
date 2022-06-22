@@ -207,11 +207,11 @@
 // }
 // alert(result);
 
-var str = '';
-for (i = 1; i <= 5; i++) {
-    for (j = 1; j <= 5; j++) {
-        str = str + '💕';
-    }
-    str += '\n';
-}
-alert(str);
+// var str = '';
+// for (i = 1; i <= 5; i++) {
+//     for (j = 1; j <= 5; j++) {
+//         str = str + '💕';
+//     }
+//     str += '\n';
+// }
+// alert(str);
