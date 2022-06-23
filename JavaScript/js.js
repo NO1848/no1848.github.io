@@ -215,3 +215,99 @@
 //     str += '\n';
 // }
 // alert(str);
+
+// //打印星星倒三角
+// var str = '';
+// var ranks = prompt('ranks');
+// for (i = 1; i <= ranks; i++) {
+//     for (j = i; j <= ranks; j++) {
+//         str = str + '💕';
+//     }
+//     str = str + '\n'
+//         // ranks--;
+// }
+// alert(str);
+
+// var str = '';
+// var ranks = prompt('');
+// for (i = 1; i <= ranks; i++) {
+//     // for (j = 1; j <= i; j++) {
+//     for (j = ranks - i + 1; j <= ranks; j++) {
+//         str += '💕';
+//     }
+//     str += '\n'
+// }
+// alert(str);
+
+// //九九乘法表
+// var nmb = '';
+// for (i = 1; i <= 9; i++) {
+//     for (j = 1; j <= i; j++) {
+//         nmb += j + '×' + i + '=' + i * j + '\t';
+//     }
+//     nmb = nmb + '\n';
+// }
+// console.log(nmb);
+
+// while
+// var str = '';
+// var num = 1;
+// while (num <= 100) {
+//     str += 'hi' + num + '\n';
+//     num++;
+
+// }
+// console.log(str);
+
+// var num = 0;
+// var mun = 0;
+// while (num <= 100) {
+//     num++;
+//     mun = mun + num;
+// }
+// alert(mun);
+
+// var str = prompt('wo');
+// while (str != wo) {
+//     str = prompt('wo');
+// }
+// typeof(str)
+
+// do while
+// var num = 1;
+// do {
+//     console.log('woykjk' + num + 'svle');
+//     num++;
+// } while (num <= 100);
+
+// var num = 0;
+// var mun = 0;
+// do {
+//     num++;
+//     mun += num;
+// } while (num <= 100);
+// alert(mun);
+
+// do {
+//     var xnxi = prompt('1');
+// } while (xnxi != 1)
+
+// 复习九九乘法表
+// var num = '';
+// var nmb = prompt('')
+// for (var i = 1; i <= nmb; i++) {
+//     for (var j = 1; j <= i; j++) {
+//         num = num + j + '×' + i + '=' + j * i + '\t';
+//     }
+//     num += '\n';
+// }
+// alert(num);
+
+// // 数组
+// var array = [1, 2, 3, 4, 5, 6, 7];
+// alert(array[6]);
+
+// var array = [1, 2, 3, 4, 5, 6, 7];
+// for (i = 0; i <= 7; i++) {
+//     console.log(array[i]);
+// }
