@@ -429,12 +429,82 @@ for (i = 0; i <= arr.length - 1; i++) {
 }
 console.log(arr); */
 
-function getMax() {
-    var max = arguments[0];
-    for (i = 0; i < arguments.length; i++) {
-        if (arguments[i] > max)
-            max = arguments[i];
+// function getMax() {
+//     var max = arguments[0];
+//     for (i = 0; i < arguments.length; i++) {
+//         if (arguments[i] > max)
+//             max = arguments[i];
+//     }
+//     return max;
+// }
+// alert(getMax(49, 3, 139, 6, 255, 36, 21, 9, 166, 78, 216, 84, 71, 62, 10, 123, 25, 69, 198));
+
+/* var keke = {
+    dogename: 'keke',
+    dogetype: 'aalasijx',
+    dogeyear: '5',
+    dogecolor: 'zshsse',
+    dogeskill: function() {
+        console.log('bark' + 'showFlim', );
     }
-    return max;
+
 }
-alert(getMax(49, 3, 139, 6, 255, 36, 21, 9, 166, 78, 216, 84, 71, 62, 10, 123, 25, 69, 198));
+alert(keke.dogename); */
+
+/* var mkrf = new Object();
+mkrf.name = 'mkrf';
+mkrf.sex = 'nan';
+mkrf.year = '19';
+mkrf.canDO = function() {
+        console.log('ffuf');
+    }
+    // alert(mkrf['sex']);
+alert(mkrf.sex); */
+
+/* // 构造函数
+function Hero(iname, itype, iblood, iattack) {
+    this.name = iname;
+    this.type = itype;
+    this.blood = iblood;
+    this.attack = iattack;
+}
+var hzyi = new Hero('hzyi', 'ueuz', 'wuqm', 'yrig');
+// alert(hzyi.type);
+console.log(hzyi); */
+
+/* var sign = 1;
+var deno = 1;
+var sum = 0;
+var t = sign * 1 / deno
+while (Math.abs(t) > 10e-10) {
+    sum += t
+    sign = sign * -1;
+    deno += 2;
+    t = sign * 1 / deno;
+}
+var pi = sum * 4;
+alert("π的值为：" + pi); */
+
+/* // var/let
+// 注意：必须声明 'use strict' 后才能使用let声明变量，否则浏览并不能显示结果
+for (var i = 0; i < 3; i++) {
+    setTimeout(function() {
+        console.log(i)
+    }, 1000);
+}
+for (let i = 0; i < 3; i++) {
+    setTimeout(function() {
+        console.log(i)
+    }, 1000);
+} */
+
+// 二月份天数
+function tmu(nmff) {
+    var tmuu = 28;
+    if (nmff % 4 == 0 && nmff % 100 != 0 || nmff % 400 == 0) {
+        tmuu = 29;
+    }
+
+    return tmuu;
+}
+alert(tmu(prompt()));
