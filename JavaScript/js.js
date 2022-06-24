@@ -308,6 +308,133 @@
 // alert(array[6]);
 
 // var array = [1, 2, 3, 4, 5, 6, 7];
-// for (i = 0; i <= 7; i++) {
+// // console.log(array.length);
+// for (i = 0; i < array.length; i++) {
 //     console.log(array[i]);
 // }
+
+// var sum = 0;
+// var arr = [2, 5, 1, 7, 4];
+// for (i = 0; i < arr.length; i++) {
+//     sum = sum + arr[i];
+// }
+// alert(sum);
+// alert(sum / arr.length);
+
+// 数组最大值
+// var arr = [3, 6, 21, 9, 78, 216, 44, 71, 62, 45, 123, 25, 69, 198];
+// var x = 0;
+// for (var i = 1; i + 1 < arr.length; i++) {
+//     if (arr[x] > arr[i]) {
+//         x = x;
+//     } else {
+//         x = i;
+//     }
+// }
+// alert(arr[x]);
+
+// var arr = ['1.', '2.', '3.', '4.', '5.'];
+// var str = '';
+// var sep = '\n';
+// for (i = 0; i < arr.length; i++) {
+//     str += arr[i] + sep;
+//     // str = (i + 1) + '.' + str;
+// }
+// console.log(str);
+
+// var arr = [];
+// // arr[2] = 3;
+// for (var i = 0; i < 1000; i++) {
+//     arr[i] = i + 1;
+// }
+// alert(arr);
+
+// // 查找大于100的值
+// var arr = [103, 6, 21, 9, 78, 216, 44, 71, 62, 45, 123, 25, 69, 198];
+// var arr1 = [];
+// var x = 0;
+// for (var i = 0; i < arr.length; i++) {
+//     if (arr[i] > 100) {
+//         arr1[x] = arr[i];
+//         x++;
+//     }
+// }
+// alert(arr1);
+
+/* var arr = [103, 6, 21, 9, 78, 216, 44, 71, 62, 45, 123, 25, 69, 198];
+var arr1 = [];
+for (var i = 0; i < arr.length; i++) {
+    if (arr[i] > 100) {
+        arr1[arr1.length] = arr[i];
+    }
+}
+alert(arr1); */
+
+/* var arr = [3, 6, 21, 9, 0, 78, 216, 0, 44, 71, 62, 0, 45, 123, 25, 69, 198];
+var newArr = [];
+for (var i = 0; i < arr.length; i++) {
+    if (arr[i] > 0) {
+            // if (arr[i] != 0) {
+        newArr[newArr.length] = arr[i];
+    }
+}
+alert(newArr); */
+
+/* var arr = [3, 6, 21, 9, 78, 216, 44, 71, 62, 45, 123, 25, 69, 198];
+var newArr = [];
+for (let i = arr.length - 1; i >= 0; i--) {
+    newArr[newArr.length] = arr[i]
+}
+// for (let i = 0; i < arr.length; i++) {
+//     newArr[newArr.length] = arr[arr.length - i - 1]
+// }
+alert(newArr); */
+
+/* function getSum() {
+    var sum = 0;
+    for (var i = 0; i <= 100; i++) {
+        sum += i;
+    }
+    alert(sum);
+}
+getSum(); */
+
+/* function look(dwe) {
+    alert(dwe);
+}
+look('sd'); */
+
+/* // var star = prompt();
+// var en = prompt();
+function getSum(start, end) {
+    var sum = 0;
+    for (var i = start; i <= end; i++) {
+        sum += i;
+    }
+    return sum;
+}
+alert(getSum(1, 100))
+    // alert(getSum(star, en)); */
+
+/* // 冒泡排序
+var arr = [49, 3, 139, 6, 255, 36, 21, 9, 166, 78, 216, 84, 71, 62, 10, 123, 25, 69, 198];
+for (i = 0; i <= arr.length - 1; i++) {
+    for (var j = 0; j <= arr.length - i - 1; j++) {
+        if (arr[j] < arr[j + 1]) {
+            var temp = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = temp;
+        }
+    }
+}
+console.log(arr); */
+
+function getMax() {
+    var max = arguments[0];
+    for (i = 0; i < arguments.length; i++) {
+        if (arguments[i] > max)
+            max = arguments[i];
+    }
+    return max;
+}
+alert(getMax(49, 3, 139, 6, 255, 36, 21, 9, 166, 78, 216, 84, 71, 62, 10, 123, 25, 69, 198));
