@@ -470,9 +470,15 @@ function Hero(iname, itype, iblood, iattack) {
 }
 var hzyi = new Hero('hzyi', 'ueuz', 'wuqm', 'yrig');
 // alert(hzyi.type);
-console.log(hzyi); */
+console.log(hzyi);
 
-/* var sign = 1;
+// 遍历对象
+for (const k in hzyi) {
+    console.log(hzyi[k]);
+} */
+
+/* // 计算圆周率
+var sign = 1;
 var deno = 1;
 var sum = 0;
 var t = sign * 1 / deno
@@ -498,7 +504,7 @@ for (let i = 0; i < 3; i++) {
     }, 1000);
 } */
 
-// 二月份天数
+/* // 二月份天数
 function tmu(nmff) {
     var tmuu = 28;
     if (nmff % 4 == 0 && nmff % 100 != 0 || nmff % 400 == 0) {
@@ -507,4 +513,68 @@ function tmu(nmff) {
 
     return tmuu;
 }
-alert(tmu(prompt()));
+alert(tmu(prompt())); */
+
+/* // console.log(Math.PI);
+function calculateCircumference(radius) {
+    return 2 * Math.PI * radius;
+}
+
+alert(calculateCircumference(prompt())); */
+
+// console.log(Math.min()); // 无穷大
+
+/* // 随机数
+function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min; //含最大值，含最小值 
+}
+var arr = [49, 3, 139, 6, 255, 36, 21, 9, 166, 78, 216, 84, 71, 62, 10, 123, 25, 69, 198];
+// 随机点名
+// alert(arr[getRandomIntInclusive(0, arr.length - 1)]);
+//猜彩票
+alert([arr[getRandomIntInclusive(0, arr.length - 1)], arr[getRandomIntInclusive(0, arr.length - 1)], arr[getRandomIntInclusive(0, arr.length - 1)], arr[getRandomIntInclusive(0, arr.length - 1)], arr[getRandomIntInclusive(0, arr.length - 1)], arr[getRandomIntInclusive(0, arr.length - 1)]]); */
+
+/* // 猜数字 十次机会
+function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min; //含最大值，含最小值 
+}
+var random = getRandomIntInclusive(1, 50);
+for (var i = 1; i <= 10; i++) {
+
+    var num = prompt();
+    if (num > random) {
+        alert('dale');
+
+    } else if (num < random) {
+        alert('xnle');
+    } else {
+        alert('dvle');
+        break;
+    }
+} */
+
+/* // date
+var date = new Date();
+// var nowhour = date.getHours();
+// nowhour = nowhour < 0 ? '0' + nowhour ： nowhour；
+// var nowminute = date.getMinutes();
+// nowminute=nowminute< 0 ? '0' + nowminute ： nowminute；
+// var nowsecond = date.getSeconds();
+// nowsecondr = nowsecond < 0 ? '0' + nowsecond ： nowsecond；
+// var uiif = nowhour + ':' + nowminute + ':' + nowsecond;
+var uiif = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+alert(uiif); */
+
+/* // 获取毫秒数
+// alert(Date.now());
+
+// var date = +new Date();
+// alert(date);
+
+var date = new Date();
+// alert(date.getTime());
+alert(date.valueOf()); */
