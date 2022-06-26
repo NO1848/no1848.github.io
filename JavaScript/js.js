@@ -578,3 +578,48 @@ alert(uiif); */
 var date = new Date();
 // alert(date.getTime());
 alert(date.valueOf()); */
+
+/* // 添加删除数组元素
+var arr = [1, 2, 3];
+arr.push(4.5, 'hi');
+arr.unshift(0, 'h');
+arr.pop(arr);
+arr.shift(arr);
+console.log(arr); */
+
+/* var arr = [1, 2, 3, 5, 9, 7, 6];
+console.log(arr.lastIndexOf(1));
+console.log(arr.indexOf(1)); */
+
+/* var str = 'abaasdffgghhjjkkgfddsssss3444343';
+// console.log(str.length);
+// console.log(str.charAt(0));
+// console.log(str[3]);
+// console.log(str[5]);
+// console.log(str[9]);
+// console.log(str.concat('hiiiii'));
+// console.log(str.replace('g', '9527'));
+// console.log(str.indexOf('s', [0]));
+// console.log(str.slice(5, 10));
+//1.每个字符出现次数；
+var o = {};
+for (let i = 0; i < str.length; i++) {
+    var chars = str.charAt(i);
+    if (o[chars]) { // chars是字符串的每一个字符；
+        o[chars]++;
+    } else {
+        o[chars] = 1;
+    }
+}
+console.log(o);
+// 2.遍历对象，找到出现次数最多的字符
+var max = 0;
+var ch = '';
+for (var k in o) {
+    if (o[k] > max) {
+        max = o[k];
+        ch = k;
+    }
+}
+console.log(max);
+console.log('出现次数最多的字符是' + ch); */
