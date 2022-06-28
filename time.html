@@ -9,10 +9,34 @@
 </head>
 
 <body>
-    <div>
 
-    </div>
+
+    <p></p>
+
     <script>
+        function getDate() {
+            var date = new Date();
+            var hou = date.getHours();
+            if (hou < 10) {
+                hou = '0' + hou;
+            }
+            var minu = date.getMinutes();
+            if (minu < 10) {
+                minu = '0' + minu;
+            }
+            var seco = date.getSeconds();
+            if (seco < 10) {
+                seco = '0' + seco;
+            }
+            var tim = hou + ':' + minu + ':' + seco;
+            return tim;
+        }
+        var p = document.querySelector('p');
+        p.innerHTML = getDate();
+    </script>
+
+
+    <!-- <script>
         var date = new Date();
         var nowhour = date.getHours();
         nowhour = nowhour < 0 ? '0' + nowhour : nowhour;
@@ -22,7 +46,7 @@
         nowsecondr = nowsecond < 0 ? '0' + nowsecond : nowsecond;
         var uiif = nowhour + ':' + nowminute + ':' + nowsecond;
         // alert(uiif);
-    </script>
+    </script> -->
 </body>
 
 </html>
