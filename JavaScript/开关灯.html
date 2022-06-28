@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开关灯</title>
+    <style>
+        .bodys {
+            background-color: rgb(255, 255, 255);
+        }
+        
+        .bodyss {
+            background-color: black;
+        }
+    </style>
+</head>
+
+<body class="bodys">
+    <button class="butt">关灯</button>
+    <script>
+        // var butt = document.getElementsByClassName('butt');
+        // var butt = document.getElementsByTagName('button');
+        // var butt = document.querySelector('butt');
+        var butt = document.querySelector('button');
+        var bod = document.body;
+        var flag = 2;
+        butt.onclick = function() {
+            if (flag > 1) {
+                // bod.className = 'bodys bodyss';
+                bod.style.backgroundColor = 'black';
+                butt.innerHTML = '开灯';
+                flag = 0;
+            } else {
+                // bod.className = 'bodys';
+                bod.style.backgroundColor = 'white';
+                butt.innerHTML = '关灯';
+                flag = 2;
+            }
+        }
+    </script>
+</body>
+
+</html>
