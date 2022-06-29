@@ -29,24 +29,14 @@
                 seco = '0' + seco;
             }
             var tim = hou + ':' + minu + ':' + seco;
-            return tim;
+            document.querySelector('p').innerHTML = tim;
+
         }
-        var p = document.querySelector('p');
-        p.innerHTML = getDate();
+        var mytime = setInterval("getDate()", 1000);
     </script>
 
 
-    <!-- <script>
-        var date = new Date();
-        var nowhour = date.getHours();
-        nowhour = nowhour < 0 ? '0' + nowhour : nowhour;
-        var nowminute = date.getMinutes();
-        nowminute = nowminute < 0 ? '0' + nowminute : nowminute;
-        var nowsecond = date.getSeconds();
-        nowsecondr = nowsecond < 0 ? '0' + nowsecond : nowsecond;
-        var uiif = nowhour + ':' + nowminute + ':' + nowsecond;
-        // alert(uiif);
-    </script> -->
+
 </body>
 
 </html>
