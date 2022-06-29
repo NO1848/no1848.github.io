@@ -6,12 +6,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Time</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        div {
+            font-size: 20vw;
+            text-align: center;
+            line-height: 100vh;
+            font-weight: 1000;
+        }
+    </style>
 </head>
 
 <body>
 
-
-    <p></p>
+    <div></div>
 
     <script>
         function getDate() {
@@ -29,13 +41,10 @@
                 seco = '0' + seco;
             }
             var tim = hou + ':' + minu + ':' + seco;
-            document.querySelector('p').innerHTML = tim;
-
+            document.querySelector('div').innerHTML = tim;
         }
-        var mytime = setInterval("getDate()", 1000);
+        var mytime = setInterval("getDate()", 1);
     </script>
-
-
 
 </body>
 
