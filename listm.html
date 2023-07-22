@@ -81,7 +81,7 @@
     <div class="container">
         <h1>Todo List</h1>
         <form id="todo-form">
-            <input type="text" placeholder="Add todo">
+            <input type="text" id="todo-input" placeholder="Add todo">
             <button type="submit">Add</button>
         </form>
         <ul id="todo-list"></ul>
@@ -89,7 +89,7 @@
 
     <script>
         const form = document.getElementById('todo-form');
-        const input = form.querySelector('input');
+        const input = document.getElementById('todo-input');
         const list = document.getElementById('todo-list');
 
         let todos = [];
@@ -130,6 +130,8 @@
         }
 
         renderTodoList();
+
+        input.focus();
     </script>
 </body>
 
