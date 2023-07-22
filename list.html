@@ -97,6 +97,7 @@
                 deleteButton.innerText = 'Delete';
                 deleteButton.addEventListener('click', () => {
                     todos.splice(index, 1);
+                    localStorage.setItem('todos', JSON.stringify(todos));
                     renderTodoList();
                 });
                 li.appendChild(todoItem);
@@ -110,10 +111,15 @@
             const todo = input.value.trim();
             if (todo) {
                 todos.push(todo);
+                localStorage.setItem('todos', JSON.stringify(todos));
                 input.value = '';
                 renderTodoList();
             }
         });
+
+        if (localStorage.getItem('todos')) {
+            todos = JSON.parse(localStorage.getItem('todos'));
+        }
 
         renderTodoList();
     </script>
