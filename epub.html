@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPUB阅读器</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/epubjs/dist/epub.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        #viewer {
+            width: 80%;
+            height: 600px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+        }
+        #controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+        button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>EPUB阅读器</h1>
+    <input type="file" id="file-input" accept=".epub">
+    <div id="viewer"></div>
+    <div id="controls">
+        <button id="prev">上一页</button>
+        <button id="next">下一页</button>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const viewer = document.getElementById('viewer');
+        const prevButton = document.getElementById('prev');
+        const nextButton = document.getElementById('next');
+        let currentRendition = null;
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file.type !== 'application/epub+zip') {
+                alert('请选择EPUB文件');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const bookData = e.target.result;
+                const book = ePub(bookData);
+                currentRendition = book.renderTo('viewer', {
+                    width: '100%',
+                    height: '100%',
+                    spread: 'always'
+                });
+                currentRendition.display();
+
+                // 添加键盘事件监听
+                document.addEventListener('keyup', handleKeyPress);
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        prevButton.addEventListener('click', () => {
+            if (currentRendition) {
+                currentRendition.prev();
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (currentRendition) {
+                currentRendition.next();
+            }
+        });
+
+        function handleKeyPress(e) {
+            if (currentRendition) {
+                if (e.key === 'ArrowLeft') {
+                    currentRendition.prev();
+                } else if (e.key === 'ArrowRight') {
+                    currentRendition.next();
+                }
+            }
+        }
+    </script>
+</body>
+</html>
