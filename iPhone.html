@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360天倒计时</title>
+    <style>
+        /* 基础样式设置 */
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        /* 倒计时容器样式 */
+        .countdown-container {
+            text-align: center;
+        }
+        /* 倒计时数字样式 */
+        .countdown {
+            font-size: 12vw; /* 使用视窗宽度单位，确保在不同设备上字体都很大 */
+            font-weight: bold;
+            line-height: 1.2;
+        }
+        /* 每个倒计时项（天、时、分、秒）的样式 */
+        .countdown-item {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        /* 倒计时标签（天、时、分、秒文字）样式 */
+        .countdown-label {
+            font-size: 3vw;
+            text-transform: uppercase;
+            margin-top: 10px;
+        }
+        /* 标题样式 */
+        .title {
+            font-size: 4vw;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="countdown-container">
+        <div class="title">倒计时</div>
+        <div class="countdown" id="countdown"></div>
+    </div>
+
+    <script>
+        // 计算剩余时间
+        function getTimeRemaining(endtime) {
+            const total = Date.parse(endtime) - Date.parse(new Date());
+            const seconds = Math.floor((total / 1000) % 60);
+            const minutes = Math.floor((total / 1000 / 60) % 60);
+            const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+            const days = Math.floor(total / (1000 * 60 * 60 * 24));
+            
+            return { total, days, hours, minutes, seconds };
+        }
+
+        // 初始化并更新倒计时
+        function initializeClock(id, endtime) {
+            const clock = document.getElementById(id);
+
+            function updateClock() {
+                const t = getTimeRemaining(endtime);
+
+                // 更新HTML内容，显示倒计时
+                clock.innerHTML = `
+                    <div class="countdown-item">
+                        <div>${t.days.toString().padStart(3, '0')}</div>
+                        <div class="countdown-label">天</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div>${t.hours.toString().padStart(2, '0')}</div>
+                        <div class="countdown-label">时</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div>${t.minutes.toString().padStart(2, '0')}</div>
+                        <div class="countdown-label">分</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div>${t.seconds.toString().padStart(2, '0')}</div>
+                        <div class="countdown-label">秒</div>
+                    </div>
+                `;
+
+                // 检查是否倒计时结束
+                if (t.total <= 0) {
+                    clearInterval(timeinterval);
+                    clock.innerHTML = "<div class='countdown-item'><div>000:00:00:00</div><div class='countdown-label'>倒计时结束</div></div>";
+                }
+            }
+
+            updateClock(); // 立即更新一次时钟显示
+            const timeinterval = setInterval(updateClock, 1000); // 每秒更新一次
+        }
+
+        // 设置倒计时结束时间（当前时间 + 360天）
+        const today = new Date();
+        const deadline = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 360, 23, 59, 59);
+        
+        // 启动倒计时
+        initializeClock('countdown', deadline);
+    </script>
+</body>
+</html>
