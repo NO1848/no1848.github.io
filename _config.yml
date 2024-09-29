@@ -1,9 +1,1 @@
-# _config.yml
 theme: jekyll-theme-cayman
-permalink: pretty
-defaults:
-  -
-    scope:
-      path: ""
-    values:
-      layout: "default"
