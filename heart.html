@@ -10,29 +10,30 @@
         * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box; /* 增加 box-sizing 以简化布局计算 */
         }
-        
+
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
+            background-color: #f0f0f0; /* 添加背景色以增强视觉效果 */
         }
-        
-        div {
+
+        .heart {
             position: relative;
             width: 600px;
             height: 480px;
-            animation: heart 0.8s ease infinite alternate backwards
+            animation: heart 0.8s ease infinite alternate backwards;
         }
-        
-        div:hover {
-            animation-play-state: paused
+
+        .heart:hover {
+            animation-play-state: paused; /* 鼠标悬停时暂停动画 */
         }
-        
-        div::before,
-        div::after {
+
+        .heart::before,
+        .heart::after {
             content: "";
             position: absolute;
             border-radius: 150px 150px 0 0;
@@ -40,29 +41,29 @@
             width: 300px;
             height: 480px;
         }
-        
-        div::before {
-            transform: rotate(315deg)
+
+        .heart::before {
+            transform: rotate(315deg);
         }
-        
-        div::after {
+
+        .heart::after {
             transform: rotate(45deg);
             right: 172px;
         }
-        
+
         @keyframes heart {
             0% {
-                transform: scale(80%);
+                transform: scale(0.8); /* 修改为 0.8 以确保缩放效果更自然 */
             }
             100% {
-                transform: scale(110%);
+                transform: scale(1.1); /* 修改为 1.1 以保持比例一致 */
             }
         }
     </style>
 </head>
 
 <body>
-    <div></div>
+    <div class="heart"></div>
 </body>
 
 </html>
