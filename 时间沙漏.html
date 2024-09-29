@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064)https://show.17sucai.com/preview/1424582/2018-11-09/sl/demo.html -->
+<html><script id="youtube-hd-fjdmkanbdloodhegphphhklnjfngoffa">var ythdlog = () => {};;var ythderror = () => {};</script><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>时间沙漏</title>
+
+<style>
+body {
+	margin: 0;
+	overflow: hidden;
+	background: #2942b0;
+}
+
+button {
+	position: absolute;
+	top: 10%;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 1;
+	width: 100px;
+	height: 40px;
+	border-radius: 5px;
+	font-size: 18px;
+	color: white;
+	background: transparent;
+	border: 1px solid white;
+	transition: all .3s ease-in-out;
+	cursor: pointer;
+}
+
+button:hover {
+	background: white;
+	color: #8785a2;
+}
+
+canvas {
+	transition: transform 1s ease;
+}
+
+canvas.flip {
+	transform: rotate(180deg);
+}
+</style>
+<style id="m1nxu3mm.6gk">
+    @font-face {
+    font-family: 'MParrow';
+    src: url(data:application/font-woff;charset=utf-8;base64,d09GRgABAAAAAAQdAAoAAAAABPAAAQAAAAAAAAAAAAAAAAAAAAAECAAAABVPUy8yAAABYAAAAEQAAABgUc1dNGNtYXAAAAHEAAAARgAAAGAAcgFDZ2x5ZgAAAiAAAADwAAABNKukdSxoZWFkAAAA9AAAADQAAAA2DKcEFmhoZWEAAAEoAAAAHQAAACQEKQIaaG10eAAAAaQAAAAfAAAAJBGtAZVsb2NhAAACDAAAABQAAAAUATIBfm1heHAAAAFIAAAAFQAAACAACwAKbmFtZQAAAxAAAADnAAABe0DXvWtwb3N0AAAD+AAAABAAAAAgAAMAAXjaY2BkYGAA4gfLE97F89t8ZeBkYgCBq07amiD6mu+MRAaB/3cZXzFuAnI5GMDSAEgbC5142mNgZGBgYgACPSApwCDA+IqBkQEVcAIAGeEBSQAAAHjaY2BkYGDgBEIQzQAlkQAAAjsAFgAAAHjaY2Bm/MY4gYGVgYPRhzGNgYHBHUp/ZZBkaGFgYGJg5WSAAUYGJBCQ5poCpAwZLBkf/H/AoMeEpIaRAcpjAAAVNgmoeNpjYmBgYPzCYAbE3lBagImBQQzM/srgA6IBjAwITgB42i2KywmAQBQD57l+e9gCvAoieLd/7ShmnwZCmDBA4WslaLlMkdyzekdv0LFzSuaNQ9Kj+/ebUfNf0iv2YfA7Mb+pBQmvAAAAAAAAABQAJgA6AEwAXgByAIYAmnjaVY8hT8NAGIa/N0tzLJlgbY4LYmI0zekvTTmBuHomcGT9DXMkpD8Bwd+AhIo1wa8CVYfF4DCgm8wV7m6Gqc+8eZ7nI9AlRejwSCdERvAkYqHEQxljarv6zWIau0sEuv79xAtewy4tjJLpPH2q2rZqvtH3GAc6YiWaswlroQfPKLsaVzYe93ZXu90pneML94ElWRuWS/nhILO7qt2uG/K+M7f5OWxQsBJcLAtc9P04YLHeOu2xL1McJayMAtlx74W34YngW7n25tCe5VLoIp/nuAnxzz4eMwrO/zzDScZGG2xK393V74G7q/8AczlNtXjadY7BasJAEIb/mKgVSumh3ucBoiQetHjpod6K4MlLi7CROSzEBDaB0EfoC/hEvoLv0990G0Rwhtn99p9/hwHwiCMCXCLAsD0v0eP94DnEuNMjjDruY8rOHw/ofqcziEZUnvDhuccfn55D+v/1CC8d9/GFb88DPOO83hjnykbetuoqWxaSTpPkmmWlez1k6mQeyyxJF7HYwtbW5OI0V1OpHzHBGhsYOGaJBrJ7/TlhiS2USgVLtYAg5WoJ854uWLGzZx2QtR7BHDHPGbspFi1b/rGoWQY5347OnGU4UW82mfwCMzM4HQB42mNgZkAGjAxoAAAAjgAFSExQRAEARkMJAAAAUGF3J1oAAAAA) format('woff');
+    }
+    #MPcanvas{position:fixed;top:0;left:0;z-index:10000000;}
+    #MPtips{all:initial!important;position:fixed!important;z-index:9999996!important;top:50%!important;left:50%!important;transform:translate(-50%,-50%)!important;font-family:MParrow,"Arial",sans-serif!important;color:white!important;white-space:nowrap!important;line-height:normal!important;text-shadow:1px 1px 5px rgba(0,0,0,0.8)!important;text-align:center!important;padding:25px 20px 20px 20px!important;border-radius:5px!important;font-weight:bold!important; }
+  </style></head>
+<body>
+
+<script src="./时间沙漏_files/matter.min.js.下载"></script>
+
+<button onclick="app.flipCanvas()">翻转</button>
+
+<script>
+var app = app || {}
+
+const boundaryStyle = {
+  fillStyle: 'white',
+  strokeStyle: 'transparent'
+}
+
+const colors = ['#D3F8E2', '#E4C1F9', '#F694C1', '#EDE7B1', '#A9DEF9']
+
+app.init = function() {
+  // module aliases
+  const { Bodies, Body, Composite, Composites, Engine, Vector, World, Common } = Matter
+
+  // create an engine
+  const engine = Engine.create({
+    render: {
+      element: document.body,
+      options: {
+        height: window.innerHeight,
+        width: window.innerWidth,
+        background: '#2f2980',
+        wireframes: false
+      }
+    }
+  })
+
+  const originY = window.innerHeight / 2
+  const originX = window.innerWidth / 2
+
+  const rectTopLeft = Bodies.rectangle( originX, originY, 20, 200, {
+    angle: Math.PI / -6,
+    render: boundaryStyle,
+    isStatic: true
+  })
+
+  const rectTopRight = Bodies.rectangle( originX, originY, 20, 200, {
+    angle: Math.PI / 6,
+    render: boundaryStyle,
+    isStatic: true
+  })
+
+  const rectTop = Bodies.rectangle( originX, originY, 280, 25, {
+    render: boundaryStyle,
+    isStatic: true
+  })
+
+  const rectBottom = Bodies.rectangle( originX, originY, 280, 25, {
+    render: boundaryStyle,
+    isStatic: true
+  })
+
+  const rectLeft = Bodies.rectangle( originX, originY, 16, 30, {
+    render: boundaryStyle,
+    isStatic: true
+  })
+  const rectRight = Bodies.rectangle( originX, originY, 16, 30, {
+    render: boundaryStyle,
+    isStatic: true
+  })
+
+  const rectBottomLeft = Bodies.rectangle( originX, originY, 20, 200, {
+    angle: Math.PI / 6,
+    render: boundaryStyle,
+    isStatic: true
+  })
+
+  const rectBottomRight = Bodies.rectangle( originX, originY, 20, 200, {
+    angle: Math.PI / -6,
+    render: boundaryStyle,
+    isStatic: true
+  })
+
+  Body.translate(rectTopLeft, Vector.create(-70, -55 * Math.sqrt(3)))
+  Body.translate(rectTopRight, Vector.create(70, -55 * Math.sqrt(3)))
+  Body.translate(rectTop, Vector.create(0, 100 * Math.sqrt(3) + 10))
+  Body.translate(rectBottom, Vector.create(0, -100 * Math.sqrt(3) - 10))
+  Body.translate(rectBottomLeft, Vector.create(-70, 55 * Math.sqrt(3)))
+  Body.translate(rectBottomRight, Vector.create(70, 55 * Math.sqrt(3)))
+  Body.translate(rectLeft, Vector.create(-20, 0))
+  Body.translate(rectRight, Vector.create(20, 0))
+
+  const hourglassCompound = Body.create({
+    parts: [rectTop, rectTopLeft, rectTopRight, rectLeft, rectRight, rectBottomLeft, rectBottomRight, rectBottom],
+    isStatic: true
+  })
+
+  const balls = Composites.pyramid(originX, originY, 20, 20, 0, 0, function(x, y){
+    console.log(app.ballStyle)
+    return Bodies.circle(x, y, 5, {
+      render: {
+        fillStyle: Common.choose(colors),
+        strokeStyle: 'transparent'
+      },
+      friction: .09,
+      restitution: .15,
+      // isStatic: true
+    })
+  })
+
+  Composite.rotate(balls, Math.PI, Vector.create(originX, originY))
+  Composite.translate(balls, Vector.create(94, -40 * Math.sqrt(3)))
+
+  // add all of the bodies to the world
+  World.add(engine.world, [ hourglassCompound, balls ])
+
+  // run the engine
+  Engine.run(engine)
+  
+  app.flipCanvas = function(){
+    const canvas = document.querySelector('canvas')
+    canvas.classList.toggle('flip')
+    engine.world.gravity.y *= -1
+  }
+}
+
+app.init()</script><canvas width="901" height="537" style="background:  0% 0% / contain rgb(47, 41, 128);"></canvas>
+
+
+
+<div id="wrap" style="position:fixed;right:0px;top:0px;width:300px;background-color:rgba(255,255,255,0)!important;z-index:2147483647!important;"></div></body><div id="photoShowViewer" class="photoShow" style="opacity: 0; transition: 0.2s ease-out, transform-origin;"><div class="photoshow-viewer-shadow" style="transition: 0.2s ease-out, transform-origin;"></div>
+        
+        <div class="photoshow-img-wrapper">
+          <img>
+          <div class="photoshow-view-mode-switch-tip">a</div>
+        </div>
+        
+      <i class="photoshow-img-details"></i></div></html>
