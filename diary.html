@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Diary</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin-bottom: 10px;
+        }
+        button, input[type="file"] {
+            margin-right: 5px;
+            padding: 10px;
+        }
+        .entry {
+            background: #f0f0f0;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>My Simple Diary</h2>
+        <textarea id="diaryEntry" placeholder="Write your diary entry..."></textarea>
+        <div>
+            <button onclick="saveEntry()">Save Entry (Shift+Enter)</button>
+            <button onclick="backupDiary()">Backup</button>
+            <input type="file" id="restoreFile" accept=".json" onchange="restoreDiary(this)">
+        </div>
+        <h3>Your Entries</h3>
+        <div id="entriesContainer"></div>
+    </div>
+
+    <script>
+        // Load entries from localStorage
+        function loadEntries() {
+            const entries = JSON.parse(localStorage.getItem("diaryEntries")) || [];
+            const container = document.getElementById("entriesContainer");
+            container.innerHTML = "";
+            entries.forEach((entry, index) => {
+                const entryDiv = document.createElement("div");
+                entryDiv.className = "entry";
+                entryDiv.innerHTML = `<p>${entry.date}: ${entry.text}</p><button onclick="deleteEntry(${index})">Delete</button>`;
+                container.appendChild(entryDiv);
+            });
+        }
+
+        // Save an entry
+        function saveEntry() {
+            const text = document.getElementById("diaryEntry").value.trim();
+            if (!text) return alert("Entry is empty!");
+            const entries = JSON.parse(localStorage.getItem("diaryEntries")) || [];
+            entries.push({ date: new Date().toLocaleString(), text });
+            localStorage.setItem("diaryEntries", JSON.stringify(entries));
+            document.getElementById("diaryEntry").value = "";
+            loadEntries();
+        }
+
+        // Delete an entry
+        function deleteEntry(index) {
+            const entries = JSON.parse(localStorage.getItem("diaryEntries"));
+            entries.splice(index, 1);
+            localStorage.setItem("diaryEntries", JSON.stringify(entries));
+            loadEntries();
+        }
+
+        // Backup diary to JSON
+        function backupDiary() {
+            const entries = localStorage.getItem("diaryEntries");
+            if (!entries) return alert("No entries to backup.");
+            const blob = new Blob([entries], { type: "application/json" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "diary_backup.json";
+            link.click();
+        }
+
+        // Restore diary from JSON
+        function restoreDiary(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const entries = JSON.parse(e.target.result);
+                    localStorage.setItem("diaryEntries", JSON.stringify(entries));
+                    loadEntries();
+                    alert("Diary restored successfully!");
+                } catch {
+                    alert("Invalid file format!");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Key listener for Shift+Enter to save
+        document.getElementById("diaryEntry").addEventListener("keydown", function (e) {
+            if (e.key === "Enter" && e.shiftKey) {
+                e.preventDefault();
+                saveEntry();
+            }
+        });
+
+        // Initialize
+        loadEntries();
+    </script>
+</body>
+</html>
