@@ -1,43 +1,262 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>八号当铺 - 长按拖拽导航</title>
 
-    <title>八号当铺</title>
-    <link rel="shortcut icon" href="image/dang2.ico">
     <style>
+        /* Reset */
         * {
-            padding: 0;
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background: linear-gradient(135deg, #e9eef5, #f7f9fc);
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        #grid {
+            height: 100%;
+            width: 100%;
+            display: grid;
+            gap: 10px;
+            padding: 10px;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 1fr;
+        }
+
+        @media (orientation: landscape) {
+            #grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+
+        .item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            border-radius: 15px;
+            box-shadow:
+                4px 4px 10px rgba(0, 0, 0, 0.1),
+                -4px -4px 10px rgba(255, 255, 255, 0.8);
+
+            font-size: 18px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+
+            transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+        }
+
+        .item:active {
+            transform: scale(0.92);
+            box-shadow:
+                inset 4px 4px 8px rgba(0,0,0,0.2),
+                inset -4px -4px 8px rgba(255,255,255,0.9);
+        }
+
+        .item.dragging {
+            opacity: 0.3;
+        }
+
+        /* 拖拽影子（跟随指针的元素） */
+        .drag-ghost {
+            position: fixed !important;
+            pointer-events: none;
+            z-index: 10000;
+            box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.2);
+            opacity: 0.95;
+            transform: scale(1.02);
         }
     </style>
-
 </head>
 
 <body>
-    <!-- <a href="I.html" target="_blank">我</a> <br> -->
-    <a href="时间沙漏.html" target="_blank">沙漏</a> <br> 
-    <a href="diary.html" target="_blank">日记</a> <br> 
-    <a href="日期时间.html" target="_blank">日期时间</a> <br>
-    <a href="heart.html" target="_blank">跳动的心</a> <br>
-    <a href="black.html" target="_blank">纯黑</a> <br>
-    <a href="wallpaper.html" target="_blank">壁纸</a> <br>
-    <a href="zi.html" target="_blank">字瀑</a><br>
-    <!-- <a href="resume.html" target="_blank">简历</a><br> -->
-    <a href="know.html" target="_blank">我对世界的认知</a> <br>
-    <a href="chuan.html" target="_blank">chuan</a> <br>
-    <a href="导航.html" target="_blank">导航</a> <br>
-    <a href="https://0008.store/pikpak" target="_blank">pikpak</a> <br>
-    <a href="list.html" target="_blank">Todo List</a> <br>
-    <a href="listm.html" target="_blank">Todo List</a> <br>
-    <a href="time.html" target="_blank">Time</a> <br>
-    <a href="fyz.html" target="_blank">Time</a> <br>
-    <!-- <a href="kuan-vue-flip-clock.html" target="_blank">Time</a> <br> -->
-    <a href="epub.html" target="_blank">epub</a> <br>
+
+<div id="grid"></div>
+
+<script>
+    /* ------------------ 数据初始化 ------------------ */
+    let items = [
+        { name: "沙漏", link: "时间沙漏.html" },
+        { name: "日记", link: "diary.html" },
+        { name: "日期时间", link: "日期时间.html" },
+        { name: "跳动的心", link: "heart.html" },
+        { name: "纯黑", link: "black.html" },
+        { name: "壁纸", link: "wallpaper.html" },
+        { name: "字瀑", link: "zi.html" },
+        { name: "我对世界的认知", link: "know.html" },
+        { name: "chuan", link: "chuan.html" },
+        { name: "导航", link: "导航.html" },
+        { name: "pikpak", link: "https://0008.store/pikpak" },
+        { name: "Todo List", link: "list.html" },
+        { name: "Todo List (M)", link: "listm.html" },
+        { name: "Time", link: "time.html" },
+        { name: "Time (fyz)", link: "fyz.html" },
+        { name: "epub", link: "epub.html" }
+    ];
+
+    while (items.length < 24) {
+        items.push({ name: "空", link: "#" });
+    }
+
+    /* 读取 localStorage 排序 */
+    const saved = localStorage.getItem("gridOrder");
+    if (saved) {
+        const order = JSON.parse(saved);
+        items = order.map(i => items[i]);
+    }
+
+    const grid = document.getElementById("grid");
+
+    function render() {
+        grid.innerHTML = "";
+        items.forEach((item, index) => {
+            const a = document.createElement("a");
+            a.className = "item";
+            a.href = item.link;
+            a.target = "_blank";
+            a.textContent = item.name;
+            a.dataset.index = index;
+            a.setAttribute("draggable", "false"); // 初始不可拖动
+            grid.appendChild(a);
+        });
+    }
+
+    render();
+
+    /* ========== 长按拖拽：基于数组交换 + 重新渲染 ========== */
+    let dragIndex = -1;
+    let ghost = null;
+    let longPressTimer = null;
+    const LONG_PRESS = 300;
+    let startX = 0, startY = 0;
+
+    grid.addEventListener('pointerdown', (e) => {
+        const target = e.target.closest('.item');
+        if (!target || target.textContent.trim() === '空') return;
+
+        startX = e.clientX;
+        startY = e.clientY;
+
+        // 快速移动则取消
+        const handleMove = (ev) => {
+            if (Math.hypot(ev.clientX - startX, ev.clientY - startY) > 10) {
+                clearTimeout(longPressTimer);
+                cleanup();
+            }
+        };
+
+        const handleUp = () => {
+            clearTimeout(longPressTimer);
+            cleanup();
+        };
+
+        function cleanup() {
+            window.removeEventListener('pointermove', handleMove);
+            window.removeEventListener('pointerup', handleUp);
+            window.removeEventListener('pointercancel', handleUp);
+        }
+
+        window.addEventListener('pointermove', handleMove);
+        window.addEventListener('pointerup', handleUp);
+        window.addEventListener('pointercancel', handleUp);
+
+        longPressTimer = setTimeout(() => {
+            cleanup();
+            const idx = Number(target.dataset.index);
+            startDrag(idx, target, e);
+        }, LONG_PRESS);
+    });
+
+    function startDrag(idx, el, e) {
+        dragIndex = idx;
+        const rect = el.getBoundingClientRect();
+
+        // 创建跟随指针的影子
+        ghost = el.cloneNode(true);
+        ghost.className = 'item drag-ghost';
+        ghost.style.left = rect.left + 'px';
+        ghost.style.top = rect.top + 'px';
+        ghost.style.width = rect.width + 'px';
+        ghost.style.height = rect.height + 'px';
+        ghost.style.margin = '0';
+        ghost.style.padding = getComputedStyle(el).padding;
+        document.body.appendChild(ghost);
+
+        el.classList.add('dragging');
+
+        const offsetX = e.clientX - rect.left;
+        const offsetY = e.clientY - rect.top;
+
+        const handleMove = (ev) => {
+            ghost.style.left = (ev.clientX - offsetX) + 'px';
+            ghost.style.top = (ev.clientY - offsetY) + 'px';
+
+            // 找最接近的目标位置
+            const target = findNearestItem(ev.clientY, ev.clientX);
+            if (target !== -1 && target !== dragIndex) {
+                // 交换数组
+                [items[dragIndex], items[target]] = [items[target], items[dragIndex]];
+                dragIndex = target;
+                render();
+            }
+        };
+
+        const handleUp = () => {
+            window.removeEventListener('pointermove', handleMove);
+            window.removeEventListener('pointerup', handleUp);
+            window.removeEventListener('pointercancel', handleUp);
+
+            if (ghost) {
+                ghost.remove();
+                ghost = null;
+            }
+
+            render(); // 最终渲染
+
+            // 保存新顺序
+            localStorage.setItem('gridOrder', JSON.stringify(items.map((_, i) => i)));
+            dragIndex = -1;
+        };
+
+        window.addEventListener('pointermove', handleMove);
+        window.addEventListener('pointerup', handleUp);
+        window.addEventListener('pointercancel', handleUp);
+    }
+
+    function findNearestItem(y, x) {
+        const els = grid.querySelectorAll('.item');
+        let nearestIdx = -1;
+        let minDist = Infinity;
+
+        els.forEach((el) => {
+            const idx = Number(el.dataset.index);
+            if (idx === dragIndex || el.textContent.trim() === '空') return;
+
+            const rect = el.getBoundingClientRect();
+            const centerY = rect.top + rect.height / 2;
+            const centerX = rect.left + rect.width / 2;
+            const dist = Math.hypot(y - centerY, x - centerX);
+
+            if (dist < minDist) {
+                minDist = dist;
+                nearestIdx = idx;
+            }
+        });
+
+        return minDist < 150 ? nearestIdx : -1;
+    }
+</script>
 
 </body>
-
 </html>
