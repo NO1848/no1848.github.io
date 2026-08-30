@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="night">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>漏刻 · 时辰之钟</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕰️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1015; --ink:#ece1cb; --dim:#a0937a;
+  --gold:#d8ae6a; --gold-soft:rgba(216,174,106,.25);
+  --red:#e04f38; --jade:#7fb8a0;
+  --panel:rgba(236,225,203,.045); --line:rgba(216,174,106,.22);
+  --face:#161b23; --face2:#0f1319; --hand:#ecd8ab; --tickc:#cfae74;
+  --glow1:rgba(216,174,106,.08); --glow2:rgba(127,184,160,.06);
+  --dial-inset:inset 0 0 0 1px var(--line), inset 0 0 70px rgba(0,0,0,.55);
+  --serif:'Noto Serif SC','Songti SC','STSong',serif;
+  --sans:'Noto Sans SC','PingFang SC',sans-serif;
+  --mono:'IBM Plex Mono','Noto Sans SC',monospace;
+}
+[data-theme="day"]{
+  --bg:#f2e9d4; --ink:#241c12; --dim:#7a6a4f;
+  --gold:#9a742e; --gold-soft:rgba(154,116,46,.3);
+  --red:#bf3a22; --jade:#2f7a67;
+  --panel:rgba(36,28,18,.05); --line:rgba(36,28,18,.2);
+  --face:#faf4e2; --face2:#efe5cd; --hand:#2c2416; --tickc:#4a3c26;
+  --glow1:rgba(191,58,34,.06); --glow2:rgba(47,122,103,.06);
+  --dial-inset:inset 0 0 0 1px var(--line), inset 0 0 40px rgba(120,95,50,.15);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans); color:var(--ink); background:var(--bg);
+  min-height:100vh; overflow-x:hidden; transition:background .6s,color .6s;
+}
+body::before{
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(900px 600px at 15% -5%, var(--glow1), transparent 60%),
+    radial-gradient(900px 700px at 92% 108%, var(--glow2), transparent 60%);
+}
+::selection{background:var(--red);color:#fff}
+#fx{position:fixed;inset:0;z-index:0;pointer-events:none}
+.astro{position:fixed;border-radius:50%;pointer-events:none;z-index:0;
+  background:repeating-conic-gradient(from 0deg,var(--gold-soft) 0deg .4deg,transparent .4deg 5deg)}
+.a1{width:120vmin;height:120vmin;top:-42vmin;right:-36vmin;opacity:.45;animation:spin 300s linear infinite;
+  -webkit-mask:radial-gradient(closest-side,transparent 66%,#000 67%,#000 74%,transparent 75%);
+  mask:radial-gradient(closest-side,transparent 66%,#000 67%,#000 74%,transparent 75%)}
+.a2{width:90vmin;height:90vmin;bottom:-34vmin;left:-30vmin;opacity:.3;animation:spin 220s linear infinite reverse;
+  -webkit-mask:radial-gradient(closest-side,transparent 60%,#000 61%,#000 70%,transparent 71%);
+  mask:radial-gradient(closest-side,transparent 60%,#000 61%,#000 70%,transparent 71%)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+header,main,section,footer{position:relative;z-index:2}
+
+/* ── 顶栏 ── */
+.top{
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+  padding:16px 36px;position:sticky;top:0;z-index:10;
+  background:color-mix(in srgb,var(--bg) 72%,transparent);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line);
+}
+.brand{display:flex;align-items:center;gap:12px}
+.seal{width:42px;height:42px;background:var(--red);color:#f7ecd6;display:grid;place-items:center;
+  font-family:var(--serif);font-weight:900;font-size:24px;border-radius:6px;transform:rotate(-4deg);
+  box-shadow:0 4px 14px rgba(224,79,56,.35);transition:transform .35s}
+.brand:hover .seal{transform:rotate(3deg) scale(1.06)}
+.bname b{font-family:var(--serif);font-weight:900;font-size:21px;letter-spacing:.14em;display:block}
+.bname i{font-style:normal;font-size:11px;color:var(--dim);letter-spacing:.22em}
+.topinfo{margin-left:auto;font-family:var(--mono);font-size:13px;color:var(--dim);
+  display:flex;align-items:center;gap:10px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--jade);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 5px color-mix(in srgb,var(--jade) 30%,transparent)}}
+.ctrl{display:flex;gap:10px}
+.pill{border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;
+  font-family:var(--sans);font-size:13px;padding:7px 16px;border-radius:999px;letter-spacing:.08em;
+  transition:.3s}
+.pill:hover{background:var(--gold);border-color:var(--gold);color:#1a1409;transform:translateY(-1px)}
+.pill.on{border-color:var(--red);color:var(--red)}
+
+/* ── 主舞台 ── */
+.stage{max-width:1200px;margin:0 auto;padding:48px 36px 24px;
+  display:grid;grid-template-columns:1.15fr 1fr;gap:60px;align-items:center}
+.dial-wrap{perspective:1100px}
+.dial{position:relative;width:min(100%,540px);aspect-ratio:1;margin:0 auto;border-radius:50%;
+  background:radial-gradient(circle at 32% 26%,color-mix(in srgb,var(--face) 84%,white 16%),var(--face) 55%,var(--face2));
+  box-shadow:var(--dial-inset),0 24px 60px rgba(0,0,0,.35);
+  transition:transform .25s ease-out, background .6s}
+.dial::before{content:'';position:absolute;inset:-13px;border-radius:50%;border:1px solid var(--gold-soft)}
+.dial::after{content:'';position:absolute;inset:-24px;border-radius:50%;border:1px dashed var(--line);opacity:.6}
+.dial svg{position:absolute;inset:0;width:100%;height:100%}
+.tm{stroke:var(--tickc);opacity:.5;stroke-width:1}
+.th{stroke:var(--gold);stroke-width:3;stroke-linecap:round;opacity:.95}
+.ring{fill:none;stroke:var(--line)}
+#secRing{fill:none;stroke:var(--red);stroke-width:2.5;stroke-linecap:round;opacity:.9}
+.spinring{fill:none;stroke:var(--gold);opacity:.3;stroke-width:6;stroke-dasharray:1 9;
+  transform-origin:200px 200px;animation:spin 90s linear infinite}
+.zi{fill:var(--ink);font-family:var(--serif);font-size:27px;font-weight:600;
+  text-anchor:middle;dominant-baseline:central;pointer-events:all;cursor:default;
+  transition:fill .5s,font-size .4s}
+.zi:hover{fill:var(--gold)}
+.zi.now{fill:var(--red);font-weight:900;font-size:32px;
+  filter:drop-shadow(0 0 7px rgba(224,79,56,.65))}
+.hands{position:absolute;inset:0}
+.hand{position:absolute;left:50%;bottom:50%;transform-origin:50% 100%;border-radius:9px 9px 3px 3px}
+.hour{width:9px;height:26%;margin-left:-4.5px;background:var(--hand);z-index:3;box-shadow:0 0 10px rgba(0,0,0,.4)}
+.minute{width:6px;height:38%;margin-left:-3px;background:var(--hand);z-index:4;box-shadow:0 0 10px rgba(0,0,0,.4)}
+.second{position:absolute;left:50%;top:12%;width:2px;height:76%;margin-left:-1px;
+  background:var(--red);transform-origin:50% 50%;z-index:5;box-shadow:0 0 6px rgba(224,79,56,.5)}
+.second::after{content:'';position:absolute;left:50%;bottom:-4px;width:9px;height:9px;
+  margin-left:-4.5px;border-radius:50%;background:var(--red)}
+.cap{position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-8px;border-radius:50%;z-index:6;
+  background:radial-gradient(circle at 35% 35%,#ffe9b6,var(--gold) 60%,#6d5322);box-shadow:0 0 8px rgba(0,0,0,.5)}
+.cap::after{content:'';position:absolute;inset:5px;border-radius:50%;background:var(--red)}
+.dial-caption{text-align:center;margin-top:26px;font-family:var(--mono);font-size:12px;
+  color:var(--dim);letter-spacing:.18em}
+.dial-caption b{color:var(--red);font-weight:600}
+
+/* ── 右侧面板 ── */
+.panel{display:flex;flex-direction:column;gap:22px}
+.greet{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--dim);letter-spacing:.12em}
+.greet::before{content:'';width:9px;height:9px;background:var(--red);transform:rotate(45deg)}
+.digital{font-family:var(--mono);font-weight:600;line-height:1;color:var(--ink);
+  font-size:clamp(2.6rem,6vw,4.3rem);letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.digit{display:inline-block;height:1em;overflow:hidden;width:.62em;vertical-align:baseline}
+.reel{display:block}
+.reel span{display:block;height:1em;line-height:1;text-align:center}
+.digit.sec{color:var(--red)}
+.digital.ready .reel{transition:transform .45s cubic-bezier(.3,1.1,.4,1)}
+.colon{display:inline-block;line-height:1;margin:0 .06em;color:var(--gold);animation:blink 1s steps(2,start) infinite}
+@keyframes blink{to{visibility:hidden}}
+.dateline{display:flex;align-items:baseline;gap:14px}
+.dateline span:first-child{font-family:var(--serif);font-size:17px;font-weight:600;letter-spacing:.1em}
+.tag{font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--line);
+  padding:2px 9px;border-radius:999px;letter-spacing:.15em}
+
+.sc-card{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;
+  padding:20px 22px;background:var(--panel);border:1px solid var(--line);
+  border-left:4px solid var(--red);border-radius:4px 16px 16px 4px;transition:border-color .3s}
+.sc-card:hover{border-color:var(--gold);border-left-color:var(--red)}
+.sc-big{font-family:var(--serif);font-weight:900;font-size:66px;line-height:1;color:var(--gold);
+  text-shadow:0 2px 18px color-mix(in srgb,var(--gold) 35%,transparent)}
+.sc-name{font-family:var(--serif);font-weight:900;font-size:20px;letter-spacing:.1em}
+.sc-name em{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--dim);margin-left:10px;font-weight:500}
+.sc-desc{font-size:13px;color:var(--dim);margin-top:5px;letter-spacing:.05em}
+.sc-bar{margin-top:10px;height:4px;background:var(--line);border-radius:99px;overflow:hidden}
+.sc-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--red));width:0;transition:width 1s linear}
+.sc-card.swap .sc-big{animation:pop .55s cubic-bezier(.3,1.4,.5,1)}
+.sc-card.swap .sc-info{animation:fadein .6s}
+@keyframes pop{from{transform:scale(.5);opacity:0}}
+@keyframes fadein{from{opacity:0;transform:translateX(8px)}}
+
+.daybar-label{display:flex;justify-content:space-between;font-size:12px;color:var(--dim);
+  letter-spacing:.2em;margin-bottom:8px}
+.daybar-label b{font-family:var(--mono);color:var(--red);font-weight:600}
+.track{height:6px;background:var(--panel);border:1px solid var(--line);border-radius:99px;overflow:hidden}
+.track i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--red));transition:width 1s linear}
+
+/* ── 四海同时 ── */
+.world{max-width:1200px;margin:0 auto;padding:56px 36px 20px}
+.wtitle{display:flex;align-items:center;gap:16px;font-family:var(--serif);font-weight:900;
+  font-size:22px;letter-spacing:.3em;margin-bottom:34px}
+.wtitle::before,.wtitle::after{content:'';flex:1;height:1px;background:var(--line)}
+.wtitle u{text-decoration:none;color:var(--red);font-size:12px}
+.cities{display:flex;flex-wrap:wrap;gap:18px;justify-content:center}
+.city{width:172px;padding:20px 14px 18px;display:flex;flex-direction:column;align-items:center;gap:10px;
+  background:var(--panel);border:1px solid var(--line);border-radius:16px;
+  transition:transform .35s,border-color .35s,box-shadow .35s}
+.city:hover{transform:translateY(-6px);border-color:var(--gold);
+  box-shadow:0 16px 34px rgba(0,0,0,.25)}
+.mini{width:84px;height:84px;border-radius:50%;position:relative;
+  background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--face) 85%,white 15%),var(--face2));
+  border:1px solid var(--line);box-shadow:inset 0 0 14px rgba(0,0,0,.25)}
+.mini::before{content:'';position:absolute;inset:7px;border-radius:50%;border:1px dashed var(--line)}
+.mhand{position:absolute;left:50%;bottom:50%;transform-origin:50% 100%;border-radius:4px}
+.mh{width:3px;height:22%;margin-left:-1.5px;background:var(--hand)}
+.mm{width:2px;height:30%;margin-left:-1px;background:var(--hand)}
+.ms{width:1px;height:34%;margin-left:-.5px;background:var(--red)}
+.mhand{transition:transform .3s cubic-bezier(.4,2.1,.6,1)}
+.mcap{position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px;border-radius:50%;background:var(--gold)}
+.city-name{font-family:var(--serif);font-weight:900;font-size:18px;letter-spacing:.2em}
+.city-time{font-family:var(--mono);font-size:15px;color:var(--dim)}
+.badge{font-size:11px;padding:2px 10px;border-radius:99px;border:1px solid var(--line);letter-spacing:.2em}
+.badge.day{border-color:var(--gold);color:var(--gold)}
+.badge.night{border-color:var(--jade);color:var(--jade)}
+
+/* ── 寸阴 ── */
+.quote{min-height:36vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:18px;padding:60px 36px;text-align:center;cursor:pointer}
+.quote p{font-family:var(--serif);font-weight:600;font-size:clamp(1.35rem,3vw,2.05rem);
+  letter-spacing:.08em;max-width:760px;transition:opacity .6s,transform .6s}
+.quote p::before{content:'「';color:var(--red);font-weight:900}
+.quote p::after{content:'」';color:var(--red);font-weight:900}
+.quote em{font-style:normal;font-size:13px;color:var(--dim);letter-spacing:.25em;transition:opacity .6s}
+.quote.out p{opacity:0;transform:translateY(10px)}
+.quote.out em{opacity:0}
+.quote small{font-size:11px;color:var(--dim);opacity:.6;letter-spacing:.2em}
+
+footer{border-top:1px solid var(--line);padding:34px;text-align:center;
+  font-size:12px;color:var(--dim);letter-spacing:.25em}
+footer b{font-family:var(--serif);color:var(--gold);font-weight:900}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease}
+.reveal.in{opacity:1;transform:none}
+.cities .city{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s,
+  border-color .35s,box-shadow .35s}
+.world.in .city{opacity:1;transform:none}
+.world.in .city:nth-child(2){transition-delay:.08s}.world.in .city:nth-child(3){transition-delay:.16s}
+.world.in .city:nth-child(4){transition-delay:.24s}.world.in .city:nth-child(5){transition-delay:.32s}
+
+@media(max-width:980px){
+  .stage{grid-template-columns:1fr;gap:44px;padding:36px 22px}
+  .dial{max-width:440px}
+  .top{padding:14px 20px}
+  .topinfo{display:none}
+  .world{padding:48px 22px 12px}
+}
+@media(prefers-reduced-motion:reduce){
+  .astro,.spinring,.colon,.dot{animation:none!important}
+  .mhand{transition:none}
+}
+</style>
+</head>
+<body>
+<canvas id="fx"></canvas>
+<div class="astro a1"></div><div class="astro a2"></div>
+
+<header class="top">
+  <div class="brand"><span class="seal">漏</span>
+    <div class="bname"><b>漏刻</b><i>铜壶滴漏 · 以候晨夜</i></div>
+  </div>
+  <div class="topinfo"><span class="dot"></span>走时中 · <span id="hdate">—</span></div>
+  <div class="ctrl">
+    <button id="soundBtn" class="pill">更声 · 关</button>
+    <button id="themeBtn" class="pill">转昼</button>
+  </div>
+</header>
+
+<main class="stage">
+  <section class="dial-wrap" id="dialWrap">
+    <div class="dial" id="dial">
+      <svg id="face" viewBox="0 0 400 400" aria-hidden="true"></svg>
+      <div class="hands">
+        <div class="hand hour" id="hh"></div>
+        <div class="hand minute" id="mh"></div>
+        <div class="hand second" id="sh"></div>
+        <div class="cap"></div>
+      </div>
+    </div>
+    <div class="dial-caption">机械扫秒 · 十二时辰环 · <b id="pct">今日已过 0%</b></div>
+  </section>
+
+  <section class="panel">
+    <div class="greet" id="greet">正在校准……</div>
+    <div class="digital" id="digital"></div>
+    <div class="dateline"><span id="dateline">—</span><span class="tag">本机时间 · LOCAL</span></div>
+    <div class="sc-card" id="scCard">
+      <div class="sc-big" id="scZ">子</div>
+      <div class="sc-info">
+        <div class="sc-name"><span id="scName">夜半</span><em id="scRange">23:00 – 01:00</em></div>
+        <div class="sc-desc" id="scDesc">—</div>
+        <div class="sc-bar"><i id="scFill"></i></div>
+      </div>
+    </div>
+    <div>
+      <div class="daybar-label"><span>今 日 流 光</span><b id="pct2">0%</b></div>
+      <div class="track"><i id="fill"></i></div>
+    </div>
+  </section>
+</main>
+
+<section class="world reveal" id="worldSec">
+  <div class="wtitle"><u>◆</u>四 海 同 时<u>◆</u></div>
+  <div class="cities" id="cities"></div>
+</section>
+
+<section class="quote reveal" id="quoteBox">
+  <p id="quote"></p><em id="quoteSrc"></em>
+  <small>— 点击换一句 —</small>
+</section>
+
+<footer><b>漏刻</b> · 以寸阴为度 — 本地时间驱动 · 无需联网校时</footer>
+
+<script>
+const $ = s => document.querySelector(s);
+const pad = n => String(n).padStart(2,'0');
+
+/* ── 时辰数据 ── */
+const SC = [
+  ['子','夜半','23:00 – 01:00','万籁俱寂,子夜交替'],
+  ['丑','鸡鸣','01:00 – 03:00','夜色深沉,宜安眠'],
+  ['寅','平旦','03:00 – 05:00','曙光将启,万象待兴'],
+  ['卯','日出','05:00 – 07:00','旭日东升,宜起行'],
+  ['辰','食时','07:00 – 09:00','朝食既毕,从容理事'],
+  ['巳','隅中','09:00 – 11:00','日近正南,心定事兴'],
+  ['午','日中','11:00 – 13:00','日正中天,小憩养神'],
+  ['未','日昳','13:00 – 15:00','日影西斜,徐徐而行'],
+  ['申','晡时','15:00 – 17:00','暮色未至,事可再举'],
+  ['酉','日入','17:00 – 19:00','日落而息,归鸟入林'],
+  ['戌','黄昏','19:00 – 21:00','灯火初上,人间烟火'],
+  ['亥','人定','21:00 – 23:00','众声渐息,安卧以待'],
+];
+const scIdx = h => Math.floor(((h+1)%24)/2);
+
+/* ── 绘制表盘 SVG ── */
+const NS = 'http://www.w3.org/2000/svg', svg = $('#face');
+function mk(name, attrs, parent=svg){
+  const el = document.createElementNS(NS,name);
+  for(const k in attrs) el.setAttribute(k, attrs[k]);
+  parent.appendChild(el); return el;
+}
+mk('circle',{cx:200,cy:200,r:196,class:'ring'});
+mk('circle',{cx:200,cy:200,r:186,class:'ring',opacity:.5});
+const CIRC = 2*Math.PI*191;
+const secRing = mk('circle',{cx:200,cy:200,r:191,id:'secRing',
+  'stroke-dasharray':CIRC,'stroke-dashoffset':CIRC,transform:'rotate(-90 200 200)'});
+for(let i=0;i<60;i++){
+  const hour = i%5===0, a = i*6*Math.PI/180;
+  const r1 = hour?164:172, r2 = 180;
+  mk('line',{x1:200+r1*Math.sin(a),y1:200-r1*Math.cos(a),
+             x2:200+r2*Math.sin(a),y2:200-r2*Math.cos(a),class:hour?'th':'tm'});
+}
+mk('circle',{cx:200,cy:200,r:105,class:'spinring'});
+mk('circle',{cx:200,cy:200,r:118,class:'ring',opacity:.6});
+mk('circle',{cx:200,cy:200,r:12,fill:'var(--face2)',stroke:'var(--line)'});
+const ziEls = SC.map((d,i)=>{
+  const a = (i*30+180)*Math.PI/180;
+  const t = mk('text',{x:200+140*Math.sin(a), y:200-140*Math.cos(a), class:'zi'});
+  t.textContent = d[0];
+  const tip = mk('title',{},t); tip.textContent = `${d[0]}时 · ${d[1]} ${d[2]}`;
+  return t;
+});
+
+/* ── 数字滚动 ── */
+const digital = $('#digital'); const reels = [];
+for(let i=0;i<6;i++){
+  const d = document.createElement('span');
+  d.className = 'digit' + (i>=4?' sec':'');
+  const r = document.createElement('span'); r.className = 'reel';
+  for(let n=0;n<10;n++){const c=document.createElement('span');c.textContent=n;r.appendChild(c);}
+  d.appendChild(r); digital.appendChild(d); reels.push(r);
+  if(i===1||i===3){const col=document.createElement('span');col.className='colon';col.textContent=':';digital.appendChild(col);}
+}
+function setDigital(h,m,s){
+  const str = pad(h)+pad(m)+pad(s);
+  reels.forEach((r,i)=>{
+    const n = str[i];
+    if(r.dataset.v !== n){ r.dataset.v = n; r.style.transform = `translateY(-${n}em)`; }
+  });
+}
+
+/* ── 世界时钟 ── */
+const CITIES = [['北京','Asia/Shanghai'],['东京','Asia/Tokyo'],['伦敦','Europe/London'],
+                ['纽约','America/New_York'],['悉尼','Australia/Sydney']];
+const cityObjs = CITIES.map(([name,tz])=>{
+  const fmt = new Intl.DateTimeFormat('zh-CN',{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});
+  const card = document.createElement('div'); card.className='city';
+  card.innerHTML = `<div class="mini"><div class="mhand mh"></div><div class="mhand mm"></div>
+    <div class="mhand ms"></div><div class="mcap"></div></div>
+    <div class="city-name">${name}</div><div class="city-time">--:--</div><div class="badge">—</div>`;
+  $('#cities').appendChild(card);
+  return {fmt, hEl:card.querySelector('.mh'), mEl:card.querySelector('.mm'),
+    sEl:card.querySelector('.ms'), tEl:card.querySelector('.city-time'),
+    bEl:card.querySelector('.badge'), pH:null,pM:null,pS:null, aS:0, first:true};
+});
+function updateCities(now){
+  cityObjs.forEach(c=>{
+    const p = {}; c.fmt.formatToParts(now).forEach(x=>p[x.type]=x.value);
+    const h=+p.hour, m=+p.minute, s=+p.second;
+    const setT=(el,deg)=>{ if(c.first){el.style.transition='none';el.style.transform=`rotate(${deg}deg)`;void el.offsetWidth;el.style.transition='';} else el.style.transform=`rotate(${deg}deg)`; };
+    setT(c.hEl,(h%12)*30+m*.5);
+    if(c.pM!==m){ setT(c.mEl, c.first? m*6 : c.mEl._a+((m-c.pM+60)%60)*6 ); }
+    c.mEl._a = c.first? m*6 : (c.mEl._a??0)+((m-(c.pM??m)+60)%60)*6;
+    if(c.pS!==s){ c.aS = c.first? s*6 : c.aS+((s-c.pS+60)%60)*6; setT(c.sEl,c.aS); }
+    c.tEl.textContent = `${p.hour}:${p.minute}`;
+    const day = h>=6 && h<18;
+    c.bEl.textContent = day?'昼':'夜';
+    c.bEl.className = 'badge '+(day?'day':'night');
+    c.pH=h; c.pM=m; c.pS=s; c.first=false;
+  });
+}
+
+/* ── 时辰卡片 ── */
+let curSC = -1;
+function updateSC(h,m,s){
+  const i = scIdx(h);
+  if(i!==curSC){
+    curSC = i;
+    ziEls.forEach((el,j)=>el.classList.toggle('now', j===i));
+    const card = $('#scCard');
+    card.classList.remove('swap'); void card.offsetWidth; card.classList.add('swap');
+    $('#scZ').textContent = SC[i][0];
+    $('#scName').textContent = SC[i][1]+'时分';
+    $('#scRange').textContent = SC[i][2];
+    $('#scDesc').textContent = SC[i][3];
+    $('#greet').textContent = `现在是${SC[i][0]}时 · ${SC[i][1]} —— ${SC[i][3]}`;
+  }
+  const tsm = ((h+1)%24)*60 + m;
+  $('#scFill').style.width = (((tsm%120)+s/60)/120*100).toFixed(2)+'%';
+}
+
+/* ── 更声(滴漏音) ── */
+let soundOn=false, actx=null;
+$('#soundBtn').addEventListener('click',e=>{
+  soundOn = !soundOn;
+  if(soundOn && !actx) actx = new (window.AudioContext||window.webkitAudioContext)();
+  if(actx) actx.resume();
+  e.target.textContent = soundOn?'更声 · 开':'更声 · 关';
+  e.target.classList.toggle('on',soundOn);
+});
+function beep(accent){
+  if(!actx) return;
+  const t=actx.currentTime, o=actx.createOscillator(), g=actx.createGain();
+  o.type='sine'; o.frequency.value = accent?1568:1046;
+  g.gain.setValueAtTime(0,t);
+  g.gain.linearRampToValueAtTime(accent?.06:.035,t+.005);
+  g.gain.exponentialRampToValueAtTime(.0001,t+.13);
+  o.connect(g).connect(actx.destination); o.start(t); o.stop(t+.15);
+}
+
+/* ── 昼夜主题 ── */
+const saved = localStorage.getItem('louke-theme');
+if(saved) document.documentElement.dataset.theme = saved;
+const syncThemeBtn = ()=> $('#themeBtn').textContent =
+  document.documentElement.dataset.theme==='night' ? '转昼':'转夜';
+$('#themeBtn').addEventListener('click',()=>{
+  const el = document.documentElement;
+  el.dataset.theme = el.dataset.theme==='night'?'day':'night';
+  localStorage.setItem('louke-theme', el.dataset.theme);
+  syncThemeBtn();
+});
+syncThemeBtn();
+
+/* ── 主循环 ── */
+let lastSec=-1;
+function loop(){
+  const now = new Date();
+  const h=now.getHours(), m=now.getMinutes(), s=now.getSeconds(), ms=now.getMilliseconds();
+  $('#hh').style.transform = `rotate(${(h%12)*30 + m*.5 + s/120}deg)`;
+  $('#mh').style.transform = `rotate(${m*6 + s*.1}deg)`;
+  $('#sh').style.transform = `rotate(${(s+ms/1000)*6}deg)`;
+  secRing.style.strokeDashoffset = CIRC * (1-(s+ms/1000)/60);
+  if(s!==lastSec){ lastSec=s; onSecond(now,h,m,s); }
+  requestAnimationFrame(loop);
+}
+function onSecond(now,h,m,s){
+  setDigital(h,m,s);
+  digital.classList.add('ready');
+  const wk = '日一二三四五六'[now.getDay()];
+  $('#hdate').textContent = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 星期${wk}`;
+  $('#dateline').textContent = `${now.getMonth()+1}月${now.getDate()}日 · 星期${wk}`;
+  updateSC(h,m,s);
+  const p = ((h*3600+m*60+s)/864).toFixed(3);
+  $('#pct').textContent = `今日已过 ${p}%`;
+  $('#pct2').textContent = p+'%';
+  $('#fill').style.width = p+'%';
+  updateCities(now);
+  if(soundOn) beep(s===0);
+}
+loop();
+
+/* ── 视差 ── */
+const wrap = $('#dialWrap'), dial = $('#dial');
+wrap.addEventListener('pointermove',e=>{
+  const r = wrap.getBoundingClientRect();
+  const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+  dial.style.transform = `perspective(1000px) rotateY(${x*7}deg) rotateX(${-y*7}deg)`;
+});
+wrap.addEventListener('pointerleave',()=> dial.style.transform='');
+
+/* ── 寸阴语录 ── */
+const QUOTES = [
+  ['逝者如斯夫,不舍昼夜。','《论语 · 子罕》'],
+  ['盛年不重来,一日难再晨。','陶渊明 ·《杂诗》'],
+  ['不饱食以终日,不弃功于寸阴。','葛洪 ·《抱朴子》'],
+  ['花开堪折直须折,莫待无花空折枝。','杜秋娘 ·《金缕衣》'],
+  ['明日复明日,明日何其多。','钱福 ·《明日歌》'],
+  ['少年易老学难成,一寸光阴不可轻。','朱熹 ·《偶成》'],
+];
+let qi=0;
+function showQuote(){ $('#quote').textContent=QUOTES[qi][0]; $('#quoteSrc').textContent=QUOTES[qi][1]; }
+function nextQuote(){
+  const box=$('#quoteBox'); box.classList.add('out');
+  setTimeout(()=>{ qi=(qi+1)%QUOTES.length; showQuote(); box.classList.remove('out'); },600);
+}
+showQuote(); setInterval(nextQuote,9000);
+$('#quoteBox').addEventListener('click',nextQuote);
+
+/* ── 滚动显现 ── */
+const io = new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+}),{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ── 浮尘粒子 ── */
+const cv=$('#fx'), cx=cv.getContext('2d');
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let P=[];
+function resize(){ cv.width=innerWidth; cv.height=innerHeight;
+  P = Array.from({length:Math.floor(innerWidth/18)},()=>({
+    x:Math.random()*cv.width, y:Math.random()*cv.height,
+    r:.6+Math.random()*1.5, sp:.06+Math.random()*.2, o:Math.random()*6,
+    c: Math.random()<.75?'216,174,106':(Math.random()<.5?'224,79,56':'127,184,160')
+  }));
+}
+resize(); addEventListener('resize',resize);
+(function dust(t){
+  cx.clearRect(0,0,cv.width,cv.height);
+  if(!reduced) P.forEach(p=>{
+    p.y -= p.sp; if(p.y<-10){ p.y=cv.height+10; p.x=Math.random()*cv.width; }
+    const a = .18+.3*(0.5+0.5*Math.sin(t*.0012+p.o));
+    cx.beginPath(); cx.arc(p.x,p.y,p.r,0,7);
+    cx.fillStyle=`rgba(${p.c},${a})`; cx.fill();
+  });
+  requestAnimationFrame(dust);
+})(0);
+</script>
+</body>
+</html>
